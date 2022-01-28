@@ -34,6 +34,5 @@ def get_file_id(msg: Message):
             # "venue",
             "sticker"
         ):
-            obj = getattr(msg, message_type)
-            if obj:
+            if obj := getattr(msg, message_type):
                 return obj, obj.file_id

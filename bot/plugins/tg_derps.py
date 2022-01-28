@@ -36,21 +36,18 @@ from bot.sql.users_sql import (
 async def on_del_mesgs(client: Bot, messages: List[Message]):
     for message in messages:
         if message.chat is not None:
-            kopp = get_chek_mdid(message.message_id)
-            if kopp:
+            if kopp := get_chek_mdid(message.message_id):
                 await client.delete_messages(
                     chat_id=int(kopp.chat_id),
                     message_ids=kopp.mu_id,
                     revoke=True
                 )
-        else:
-            ym = get_chek_dmid(message.message_id)
-            if ym:
-                await client.send_message(
-                    chat_id=AUTH_CHANNEL,
-                    text=DELETED_MESSAGES_NOTIFICATION_TEXT,
-                    reply_to_message_id=ym.message_id
-                )
+        elif ym := get_chek_dmid(message.message_id):
+            await client.send_message(
+                chat_id=AUTH_CHANNEL,
+                text=DELETED_MESSAGES_NOTIFICATION_TEXT,
+                reply_to_message_id=ym.message_id
+            )
 
 
 @Bot.on_callback_query()

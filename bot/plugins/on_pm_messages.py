@@ -46,8 +46,7 @@ from bot.sql.blacklist_sql import (
     filters.private
 )
 async def on_pm_s(client: Bot, message: Message):
-    check_ban = check_is_black_list(message)
-    if check_ban:
+    if check_ban := check_is_black_list(message):
         await message.reply_text(
             text=IS_BLACK_LIST_ED_MESSAGE_TEXT.format(
                 reason=check_ban.reason
@@ -57,10 +56,10 @@ async def on_pm_s(client: Bot, message: Message):
 
     fwded_mesg = None
     if message.edit_date:
-        ym = get_chek_dmid(message.message_id)
-        reply_to_message_id = None
-        if ym:
+        if ym := get_chek_dmid(message.message_id):
             reply_to_message_id = ym.message_id
+        else:
+            reply_to_message_id = None
         await message.copy(
             chat_id=AUTH_CHANNEL,
             disable_notification=True,

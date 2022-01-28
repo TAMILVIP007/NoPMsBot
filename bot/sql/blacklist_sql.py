@@ -56,16 +56,14 @@ def check_is_black_list(message: Message):
     """ check if user_id is blacklisted """
     if message and message.from_user and message.from_user.id:
         try:
-            s__ = SESSION.query(BlackList).get(str(message.from_user.id))
-            return s__
+            return SESSION.query(BlackList).get(str(message.from_user.id))
         finally:
             SESSION.close()
 
 
 def rem_user_from_bl(chat_id: int):
     """ remove the user from the blacklist """
-    s__ = SESSION.query(BlackList).get(str(chat_id))
-    if s__:
+    if s__ := SESSION.query(BlackList).get(str(chat_id)):
         SESSION.delete(s__)
         SESSION.commit()
         return True
